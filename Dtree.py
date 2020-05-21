@@ -1,5 +1,6 @@
 import math
 from collections import Counter
+from random import shuffle
 
 
 class Node:
@@ -19,7 +20,9 @@ class Node:
             return self.label
         for i in range(len(f_name)):
             if f_name[i] == self.label:
-                return self.subnodes[features[i]].predict(features, f_name)
+                if features[i] in self.subnodes:
+                    return self.subnodes[features[i]].predict(features, f_name)
+        return 'unable'
 
     def __repr__(self):
         return '{}'.format(self.result)
@@ -95,22 +98,22 @@ def Dtree_train(data, feature, epsilon=0.1):
     return node_tree
 
 
-datasets = [['青年', '否', '否', '一般', '否'],
-            ['青年', '否', '否', '好', '否'],
-            ['青年', '是', '否', '好', '是'],
-            ['青年', '是', '是', '一般', '是'],
-            ['青年', '否', '否', '一般', '否'],
-            ['中年', '否', '否', '一般', '否'],
-            ['中年', '否', '否', '好', '否'],
-            ['中年', '是', '是', '好', '是'],
-            ['中年', '否', '是', '非常好', '是'],
-            ['中年', '否', '是', '非常好', '是'],
-            ['老年', '否', '是', '非常好', '是'],
-            ['老年', '否', '是', '好', '是'],
-            ['老年', '是', '否', '好', '是'],
-            ['老年', '是', '否', '非常好', '是'],
-            ['老年', '否', '否', '一般', '否']]
-features = ['年龄', '有工作', '有自己的房子', '信贷情况', '类别']
+# datasets = [['青年', '否', '否', '一般', '否'],
+#             ['青年', '否', '否', '好', '否'],
+#             ['青年', '是', '否', '好', '是'],
+#             ['青年', '是', '是', '一般', '是'],
+#             ['青年', '否', '否', '一般', '否'],
+#             ['中年', '否', '否', '一般', '否'],
+#             ['中年', '否', '否', '好', '否'],
+#             ['中年', '是', '是', '好', '是'],
+#             ['中年', '否', '是', '非常好', '是'],
+#             ['中年', '否', '是', '非常好', '是'],
+#             ['老年', '否', '是', '非常好', '是'],
+#             ['老年', '否', '是', '好', '是'],
+#             ['老年', '是', '否', '好', '是'],
+#             ['老年', '是', '否', '非常好', '是'],
+#             ['老年', '否', '否', '一般', '否']]
+# features = ['年龄', '有工作', '有自己的房子', '信贷情况', '类别']
 
 data_m = [
         ['青绿', '蜷缩', '浊响', '清晰', '凹陷', '硬滑', '是'],
@@ -133,7 +136,24 @@ data_m = [
     ]
 features_m = ['色泽', '根蒂', '敲声', '纹理', '脐部', '触感', '类别']
 
+shuffle(data_m)
+k_fold = 3
+for i in range(k_fold):
+    ibeg = len(data_m) // k_fold * i
+    iend = ibeg + len(data_m) // k_fold
+    v_data = data_m[ibeg:iend]
+    t_data = data_m[:ibeg] + data_m[iend:]
+    m = Dtree_train(t_data, features_m)
+    s = len(v_data)
+    hc = 0
+    uc = 0
+    for vd in v_data:
+        pred = m.predict(vd, features_m)
+        if pred == vd[-1]:
+            hc += 1
+        elif pred == 'unable':
+            uc += 1
 
-m = Dtree_train(data_m, features_m)
-
-
+    print(s, end=' ')
+    print(hc, end=' ')
+    print(uc)
