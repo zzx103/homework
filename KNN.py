@@ -96,7 +96,7 @@ def find_k_nearest(tree, target, k):
 
 
 if __name__ == "__main__":
-    data = [[2, 3, 1], [5, 4, 1], [9, 6, 1], [4, 7, -1], [8, 1, -1], [7, 2, -1]]
+    data = [[2, 3, 'a'], [5, 4, 'a'], [9, 6, 'a'], [4, 7, 'b'], [8, 1, 'b'], [7, 2, 'b']]
     kdtree = kd_tree(data)
     K = 3
     res = find_k_nearest(kdtree, [4, 5], K)
