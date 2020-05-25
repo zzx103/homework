@@ -2,9 +2,9 @@ import numpy as np
 
 
 class SVM:
-    def __init__(self, t_data, labels):
-        self.d_num, self.f_num = t_data.shape
-        self.x = t_data
+    def __init__(self, train_data, labels):
+        self.d_num, self.f_num = train_data.shape
+        self.x = train_data
         self.y = labels
         self.b = 0.0
         self.alpha = np.ones(self.d_num)
@@ -278,4 +278,20 @@ class SVM_k:
         return self.w
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    tr_list = []
+    tr_label = []
+    with open('avila-tr.txt', 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = line.strip().split(',')
+            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
+            tr_list.append(dr)
+
+    ts_data = []
+    with open('avila-ts.txt', 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = line.strip().split(',')
+            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
+            ts_data.append(dr)

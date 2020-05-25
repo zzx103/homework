@@ -95,13 +95,41 @@ def find_k_nearest(tree, target, k):
     return nearest
 
 
-if __name__ == "__main__":
-    data = [[2, 3, 'a'], [5, 4, 'a'], [9, 6, 'a'], [4, 7, 'b'], [8, 1, 'b'], [7, 2, 'b']]
-    kdtree = kd_tree(data)
-    K = 3
-    res = find_k_nearest(kdtree, [4, 5], K)
-    print(res)
-    label_value = [d[-1] for d in res['nearest']]
-    most_label = Counter(label_value).most_common()[0][0]
-    print(most_label)
+def most_label(nst):
+    label_value = [d[-1] for d in nst['nearest']]
+    m_label = Counter(label_value).most_common()[0][0]
+    return m_label
 
+
+def score(kdtree, data, k):
+    count = 0
+    for d in data:
+        k_nst = find_k_nearest(kdtree, d[:-1], k)
+        m_lab = most_label(k_nst)
+        if m_lab == d[-1]:
+            count += 1
+    return count / len(data)
+
+
+if __name__ == "__main__":
+
+    tr_data = []
+    with open('avila-tr.txt', 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = line.strip().split(',')
+            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
+            tr_data.append(dr)
+
+    ts_data = []
+    with open('avila-ts.txt', 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = line.strip().split(',')
+            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
+            ts_data.append(dr)
+
+    kdtree = kd_tree(tr_data)
+    for K in range(5, 15):
+        res = score(kdtree, ts_data, K)
+        print(res)
