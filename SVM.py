@@ -101,13 +101,14 @@ class SVM:
             self.E[i_a1] = self._E(i_a1)
             self.E[i_a2] = self._E(i_a2)
 
-
     def predict(self, data):
         r = self.b
         for i in range(self.d_num):
             r += self.alpha[i] * self.y[i] * self._K(data, self.x[i])
-
-        return 1 if r > 0 else -1
+        if r > 0:
+            return 1
+        else:
+            return -1
 
     def score(self, X_test, y_test):
         right_count = 0
@@ -117,11 +118,10 @@ class SVM:
                 right_count += 1
         return right_count / len(X_test)
 
-    def _weight(self):
-        # linear model
+    def weight(self):
         yx = self.y.reshape(-1, 1) * self.x
-        self.w = np.dot(yx.T, self.alpha)
-        return self.w
+        w = np.dot(yx.T, self.alpha)
+        return w
 
 
 
@@ -276,3 +276,6 @@ class SVM_k:
         yx = self.Y.reshape(-1, 1) * self.X
         self.w = np.dot(yx.T, self.alpha)
         return self.w
+
+
+# if __name__ == '__main__':
