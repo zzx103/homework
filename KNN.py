@@ -36,6 +36,7 @@ def preorder(root):
     if root.right:
         preorder(root.right)
 
+
 def cal_dist(x, y, p=2):
     if len(x) == len(y) and len(x) > 1:
         sum = 0
@@ -57,15 +58,15 @@ def travel(node, t_point, nst, k):
     #     如果目标节点分割维度的值小于当前节点
     #     目标点离左子树更近
     if t_point[n_dem] < n_point[n_dem]:
-        nearest_mode = node.left
-        furthre_mode = node.right
+        nearer_node = node.left
+        further_node = node.right
     #     目标点离右子树更近
     else:
-        nearest_mode = node.right
-        furthre_mode = node.left
+        nearer_node = node.right
+        further_node = node.left
 
     #     递归找到目标点所在的区域
-    travel(nearest_mode, t_point, nst, k)
+    travel(nearer_node, t_point, nst, k)
 
     #     计算欧式距离
     dist = cal_dist(t_point, n_point)
@@ -85,8 +86,8 @@ def travel(node, t_point, nst, k):
             nst['nearest'][idx] = n_point
             nst['dist'][idx] = dist
 
-    #     检查另外一个节点是否有更近的点
-    travel(furthre_mode, t_point, nst, k)
+    # 检查另外一个节点是否有更近的点
+    travel(further_node, t_point, nst, k)
     return
 
 
@@ -98,7 +99,7 @@ def find_k_nearest(tree, target, k):
 
 if __name__ == "__main__":
     data = [[2, 3], [5, 4], [9, 6], [4, 7], [8, 1], [7, 2]]
-    kd = kd_tree(data)
-    k = 3
-    res = find_k_nearest(kd, [3, 4.5], k)
+    kdtree = kd_tree(data)
+    K = 3
+    res = find_k_nearest(kdtree, [3, 4.5], K)
     print(res)
