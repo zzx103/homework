@@ -26,13 +26,13 @@ class kd_tree():
         return kd_node(dm, data[im], left, right)
 
 
-# KDTree的前序遍历
-def preorder(root):
-    print(root.value)
-    if root.left:  # 节点不为空
-        preorder(root.left)
-    if root.right:
-        preorder(root.right)
+# # KDTree的前序遍历
+# def preorder(root):
+#     print(root.value)
+#     if root.left:  # 节点不为空
+#         preorder(root.left)
+#     if root.right:
+#         preorder(root.right)
 
 
 def cal_dist(x, y, p=2):
@@ -111,23 +111,22 @@ def score(kdtree, data, k):
     return count / len(data)
 
 
+def read_file(t_file):
+    data = []
+    with open(t_file, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = line.strip().split(',')
+            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
+            data.append(dr)
+    return data
+
+
 if __name__ == "__main__":
-
-    tr_data = []
-    with open('avila-tr.txt', 'r') as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = line.strip().split(',')
-            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
-            tr_data.append(dr)
-
-    ts_data = []
-    with open('avila-ts.txt', 'r') as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = line.strip().split(',')
-            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
-            ts_data.append(dr)
+    tr_file = 'avila-tr.txt'
+    ts_file = 'avila-ts.txt'
+    tr_data = read_file(tr_file)
+    ts_data = read_file(ts_file)
 
     kdtree = kd_tree(tr_data)
     for K in range(5, 15):

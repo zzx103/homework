@@ -278,20 +278,23 @@ class SVM_k:
         return self.w
 
 
-if __name__ == '__main__':
-    tr_list = []
-    tr_label = []
-    with open('avila-tr.txt', 'r') as f:
+def read_data(t_file):
+    t_dict = {}
+    with open(t_file, 'r') as f:
         lines = f.readlines()
         for line in lines:
             temp = line.strip().split(',')
-            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
-            tr_list.append(dr)
+            dr = [float(i) for i in temp[:-1]]
+            if temp[-1] not in t_dict:
+                t_dict[temp[-1]] = [dr]
+            else:
+                t_dict[temp[-1]].append(dr)
+    return t_dict
 
-    ts_data = []
-    with open('avila-ts.txt', 'r') as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = line.strip().split(',')
-            dr = [float(i) for i in temp[:-1]] + [temp[-1]]
-            ts_data.append(dr)
+
+if __name__ == '__main__':
+    tr_file = 'avila-tr.txt'
+    tr_data = read_data(tr_file)
+    ts_file = 'avila-ts.txt'
+    ts_data = read_data(ts_file)
+
