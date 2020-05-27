@@ -110,13 +110,13 @@ class SVM:
         else:
             return -1
 
-    def score(self, X_test, y_test):
+    def score(self, x_test, y_test):
         right_count = 0
-        for i in range(len(X_test)):
-            result = self.predict(X_test[i])
+        for i in range(len(x_test)):
+            result = self.predict(x_test[i])
             if result == y_test[i]:
                 right_count += 1
-        return right_count / len(X_test)
+        return right_count / len(x_test)
 
     def weight(self):
         yx = self.y.reshape(-1, 1) * self.x

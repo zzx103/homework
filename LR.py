@@ -4,38 +4,32 @@ import numpy as np
 
 class LR:
     def __init__(self, tr_data, tr_label):
-        self.x = self.data_matrix(tr_data)
+        self.x = tr_data
         self.y = tr_label
-        self.d_num, self.f_num = self.x.shape
-        self.weight = np.zeros((len(self.x[0]), 1), dtype=np.float)
+        self.weight = np.zeros(tr_data.shape[1], dtype=np.float)
 
     def sigmoid(self, x):
         return 1 / (1 + math.exp(-x))
 
-    def data_matrix(self, data):
-        temp_one = [1.0] * len(data)
-        re_data = np.insert(data, 0, values=temp_one, axis=1)
-        return re_data
-
     def train(self, iter_times=100, learning_rate=0.01):
-        # label = np.mat(y)
+        for i_t in range(iter_times):
+            for xi, yi in zip(self.x, self.y):
+                gradient = (self.sigmoid(np.dot(xi, self.weight)) - yi) * xi
+                self.weight += -learning_rate * gradient
 
-        for t_iter in range(iter_times):
-            for i in range(self.d_num):
-                error = self.sigmoid(np.dot(self.x[i], self.weight)) - self.y[i]
-                self.weight += -learning_rate * error * np.transpose([self.x[i]])
+    def score(self, x_test, y_test, p=0.5):
+        right_count = 0
+        for x, y in zip(x_test, y_test):
+            P_x1 = self.sigmoid(np.dot(x, self.weight))
+            if (P_x1 >= p and y == 1) or (P_x1 < p and y == 0):
+                right_count += 1
+        return right_count / len(x_test)
 
-    # def f(self, x):
-    #     return -(self.weights[0] + self.weights[1] * x) / self.weights[2]
 
-    def score(self, X_test, y_test):
-        right = 0
-        X_test = self.data_matrix(X_test)
-        for x, y in zip(X_test, y_test):
-            result = np.dot(x, self.weight)
-            if (result > 0 and y == 1) or (result < 0 and y == 0):
-                right += 1
-        return right / len(X_test)
+def data_preprocess(data):
+    temp_one = [1.0] * len(data)
+    re_data = np.insert(data, 0, values=temp_one, axis=1)
+    return re_data
 
 
 if __name__ == "__main__":
