@@ -26,15 +26,6 @@ class kd_tree():
         return kd_node(dm, data[im], left, right)
 
 
-# # KDTree的前序遍历
-# def preorder(root):
-#     print(root.value)
-#     if root.left:  # 节点不为空
-#         preorder(root.left)
-#     if root.right:
-#         preorder(root.right)
-
-
 def cal_dist(x, y, p=2):
     if len(x) == len(y) and len(x) > 1:
         sum = 0

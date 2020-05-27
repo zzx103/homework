@@ -149,7 +149,7 @@ if __name__ == '__main__':
     ts_data, ts_label = read_two_label(label_1, label_2, ts_file)
 
     my_svm = SVM(tr_data, tr_label)
-    my_svm.train()
+    my_svm.train(i_times=500)
     res = my_svm.score(ts_data, ts_label)
     print(res)
 
