@@ -124,20 +124,6 @@ class SVM:
         return w
 
 
-def read_data(t_file):
-    t_dict = {}
-    with open(t_file, 'r') as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = line.strip().split(',')
-            dr = [float(i) for i in temp[:-1]]
-            if temp[-1] not in t_dict:
-                t_dict[temp[-1]] = [dr]
-            else:
-                t_dict[temp[-1]].append(dr)
-    return t_dict
-
-
 def read_two_label(la, lb, file):
     data = []
     label = []
