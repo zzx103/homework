@@ -1,4 +1,4 @@
-import math
+
 import numpy as np
 
 
@@ -34,5 +34,12 @@ class kmeans():
                         min_idx = i
                 groups[min_idx].append(d)
 
+            temp_center = []
             for i in range(k):
-                g_center[i] = self.cal_center(groups[i])
+                temp_center.append(self.cal_center(groups[i]))
+            dif = self.cal_dist(temp_center, g_center)
+            if dif == 0 or i_t == iter_times - 1:
+                return groups
+            else:
+                g_center = temp_center
+                groups.clear()
