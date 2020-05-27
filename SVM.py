@@ -101,7 +101,7 @@ class SVM:
             self.E[i_a1] = self._E(i_a1)
             self.E[i_a2] = self._E(i_a2)
 
-    def predict(self, data):
+    def classify(self, data):
         r = self.b
         for i in range(self.d_num):
             r += self.alpha[i] * self.y[i] * self._K(data, self.x[i])
@@ -113,7 +113,7 @@ class SVM:
     def score(self, x_test, y_test):
         right_count = 0
         for i in range(len(x_test)):
-            result = self.predict(x_test[i])
+            result = self.classify(x_test[i])
             if result == y_test[i]:
                 right_count += 1
         return right_count / len(x_test)

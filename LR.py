@@ -17,11 +17,18 @@ class LR:
                 gradient = (self.sigmoid(np.dot(xi, self.weight)) - yi) * xi
                 self.weight += -learning_rate * gradient
 
+    def classify(self, data, p=0.5):
+        P_x1 = self.sigmoid(np.dot(data, self.weight))
+        if P_x1 >= p:
+            return 1
+        else:
+            return 0
+
     def score(self, x_test, y_test, p=0.5):
         right_count = 0
         for x, y in zip(x_test, y_test):
-            P_x1 = self.sigmoid(np.dot(x, self.weight))
-            if (P_x1 >= p and y == 1) or (P_x1 < p and y == 0):
+            result = self.classify(x, p)
+            if result == y:
                 right_count += 1
         return right_count / len(x_test)
 
