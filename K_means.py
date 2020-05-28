@@ -2,7 +2,7 @@
 import numpy as np
 
 
-class kmeans():
+class k_means():
     def __init__(self, train_data, k):
         self.data = np.array(train_data)
         self.k = k
@@ -68,5 +68,5 @@ if __name__ == '__main__':
     label_2 = 'F'
 
     tr_data, tr_label = read_two_label(label_1, label_2, tr_file)
-    k_means = kmeans(tr_data, 2)
-    print(k_means.centers)
+    k_ms = k_means(tr_data, 2)
+    print(k_ms.centers)
