@@ -11,18 +11,22 @@ class SVM:
         self.E = [self._E(i) for i in range(self.d_num)]
         self.C = 1.0
 
+    # 核函数
     def _K(self, xi, xj):
         return np.dot(xi, xj)
 
+    # 计算E(i)
     def _E(self, i):
         return self._g(i) - self.y[i]
 
+    # 计算g(i)
     def _g(self, i):
         res = self.b
         for j in range(self.d_num):
             res += self.alpha[j] * self.y[j] * self._K(self.x[j], self.x[i])
         return res
 
+    # 判断是否满足KKT条件
     def _KKT(self, i):
         y_g = self._g(i) * self.y[i]
         if self.alpha[i] == 0:
@@ -32,6 +36,7 @@ class SVM:
         else:
             return y_g <= 1
 
+    # 选择α1和α2
     def _choose_alpha(self):
         i_a1 = -1
         i_a2 = -1
@@ -53,6 +58,7 @@ class SVM:
             i_a2 = max(range(self.d_num), key=lambda x: self.E[x])
         return i_a1, i_a2
 
+    # 开始训练
     def train(self, i_times=100):
         for t in range(i_times):
             i_a1, i_a2 = self._choose_alpha()
@@ -101,6 +107,7 @@ class SVM:
             self.E[i_a1] = self._E(i_a1)
             self.E[i_a2] = self._E(i_a2)
 
+    # 判断是正例还是负例
     def classify(self, data):
         r = self.b
         for i in range(self.d_num):
@@ -110,6 +117,7 @@ class SVM:
         else:
             return -1
 
+    # 计算测试集上的准确率
     def score(self, x_test, y_test):
         right_count = 0
         for i in range(len(x_test)):
@@ -118,12 +126,14 @@ class SVM:
                 right_count += 1
         return right_count / len(x_test)
 
+    # 获取权重
     def weight(self):
         yx = self.y.reshape(-1, 1) * self.x
         w = np.dot(yx.T, self.alpha)
         return w
 
 
+# 读取数据
 def read_two_label(la, lb, file):
     data = []
     label = []

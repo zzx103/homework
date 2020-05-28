@@ -8,14 +8,17 @@ class k_means():
         self.k = k
         self.centers = self.data[:k]
 
+    # 计算距离
+    @staticmethod
+    def cal_dist(x, y, p=2):
+        return np.linalg.norm(x - y, ord=p)
+
+    # 计算一个类中心
     @staticmethod
     def cal_center(gi):
         return np.mean(np.array(gi), axis=0)
 
-    @staticmethod
-    def cal_dist(x, y, p=2):
-        return np.linalg.norm(x-y, ord=p)
-
+    # 重新分类
     def de_group(self):
         g = []
         for i in range(self.k):
@@ -31,12 +34,14 @@ class k_means():
             g[min_idx].append(d)
         return g
 
+    # 重新计算所有类中心
     def de_centers(self, groups_):
         new_centers = []
         for i in range(self.k):
             new_centers.append(self.cal_center(groups_[i]))
         return np.array(new_centers)
 
+    # 开始训练
     def train(self, iter_times=100):
         if self.k >= len(self.data):
             return 'k>=n'
@@ -49,6 +54,7 @@ class k_means():
         return
 
 
+# 获取聚类结果
 def cluster_result(centers, data):
     res = []
     for d in data:
@@ -63,6 +69,7 @@ def cluster_result(centers, data):
     return np.array(res)
 
 
+# 读数据
 def read_data_labels(s_labels, file):
     data = []
     label = []
@@ -77,12 +84,12 @@ def read_data_labels(s_labels, file):
     return np.array(data), np.array(label)
 
 
+# 计算归一化互信息NMI
 def NMI(A,B):
-    # len(A) should be equal to len(B)
+
     total = len(A)
     A_ids = set(A)
     B_ids = set(B)
-    #Mutual information
     MI = 0
     eps = 1.4e-45
     for idA in A_ids:
@@ -94,7 +101,6 @@ def NMI(A,B):
             py = 1.0*len(idBOccur[0])/total
             pxy = 1.0*len(idABOccur)/total
             MI = MI + pxy*math.log(pxy/(px*py)+eps, 2)
-    # Normalized Mutual information
     Hx = 0
     for idA in A_ids:
         idAOccurCount = 1.0*len(np.where(A == idA)[0])

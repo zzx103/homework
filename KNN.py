@@ -2,6 +2,7 @@ import math
 from collections import Counter
 
 
+# kd树结点
 class kd_node():
     def __init__(self, dm, value, left, right):
         self.dem = dm
@@ -10,10 +11,12 @@ class kd_node():
         self.right = right
 
 
+# kd树
 class kd_tree():
     def __init__(self, data):
         self.root = self.build(data, 0)
 
+    # 构造kd树
     def build(self, data, dm):
         if len(data) == 0:
             return None
@@ -26,6 +29,7 @@ class kd_tree():
         return kd_node(dm, data[im], left, right)
 
 
+# 计算欧式距离
 def cal_dist(x, y, p=2):
     if len(x) == len(y) and len(x) > 1:
         sum = 0
@@ -40,16 +44,16 @@ def travel(node, t_point, nst, k):
     if node is None:
         return
 
-    #     当前节点的分割维度
+    # 当前节点的分割维度
     n_dem = node.dem
-    #     当前节点的值
+    #  当前节点的值
     n_point = node.value[:-1]
-    #     如果目标节点分割维度的值小于当前节点
-    #     目标点离左子树更近
+    #  如果目标节点分割维度的值小于当前节点
+    #  目标点离左子树更近
     if t_point[n_dem] < n_point[n_dem]:
         nearer_node = node.left
         further_node = node.right
-    #     目标点离右子树更近
+    #  目标点离右子树更近
     else:
         nearer_node = node.right
         further_node = node.left
@@ -80,18 +84,21 @@ def travel(node, t_point, nst, k):
     return
 
 
+# 在kd树中寻找k个最近邻
 def find_k_nearest(tree, target, k):
     nearest = {'nearest': [], 'dist': []}
     travel(tree.root, target, nearest, k)
     return nearest
 
 
+# 获取出现次数最多的标签
 def most_label(nst):
     label_value = [d[-1] for d in nst['nearest']]
     m_label = Counter(label_value).most_common()[0][0]
     return m_label
 
 
+# 计算测试集上的准确率
 def score(kdtree, data, k):
     count = 0
     for d in data:
@@ -102,6 +109,7 @@ def score(kdtree, data, k):
     return count / len(data)
 
 
+# 读取数据
 def read_file(t_file):
     data = []
     with open(t_file, 'r') as f:
