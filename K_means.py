@@ -46,9 +46,12 @@ class k_means():
         if self.k >= len(self.data):
             return 'k>=n'
         for i_t in range(iter_times):
+            # 数据分组
             groups = self.de_group()
+            # 计算类中心
             g_centers = self.de_centers(groups)
-            if (g_centers == self.centers).all():  # 质心没更新, 提前结束
+            # 类中心没更新, 提前结束
+            if (g_centers == self.centers).all():
                 break
             self.centers = g_centers
         return
@@ -115,13 +118,14 @@ def NMI(A,B):
 
 if __name__ == '__main__':
     tr_file = 'avila-tr.txt'
+    # 读取标签为’B‘，‘F’，‘I’的数据
     labels = ['B', 'F', 'I']
     tr_data, tr_label = read_data_labels(labels, tr_file)
 
     k = 3
     k_ms = k_means(tr_data, k)
     k_ms.train()
-    print(k_ms.centers)
+    print('类中心:', k_ms.centers)
     cres = cluster_result(k_ms.centers, tr_data)
     print('NMI:', NMI(cres, tr_label))
 

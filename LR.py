@@ -66,7 +66,7 @@ def read_two_label(la, lb, file):
 if __name__ == '__main__':
     tr_file = 'avila-tr.txt'
     ts_file = 'avila-ts.txt'
-
+    # 标签E数据为正类，标签F数据为负类
     label_1 = 'E'
     label_2 = 'F'
 
