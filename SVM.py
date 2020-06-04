@@ -161,5 +161,5 @@ if __name__ == '__main__':
     my_svm = SVM(tr_data, tr_label)
     my_svm.train(i_times=500)
     res = my_svm.score(ts_data, ts_label)
-    print(res)
+    print('precision: ', res)
 

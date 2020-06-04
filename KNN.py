@@ -130,4 +130,4 @@ if __name__ == "__main__":
     kdtree = kd_tree(tr_data)
     for K in range(5, 15):
         res = score(kdtree, ts_data, K)
-        print(res)
+        print('k=' + str(K) + ':' + str(res))

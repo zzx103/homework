@@ -79,4 +79,4 @@ if __name__ == '__main__':
     lrc = LR(tr_data, tr_label)
     lrc.train()
     res = lrc.score(ts_data, ts_label)
-    print(res)
+    print('precision: ', res)
